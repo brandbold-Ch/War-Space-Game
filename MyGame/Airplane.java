@@ -4,49 +4,53 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 
-public class Airplane extends JPanel implements KeyListener {
-
-    Obstacle obstacle = new Obstacle(this);
+public class Airplane extends JPanel implements KeyListener, MouseMotionListener {
     Fond fond = new Fond();
-
+    Briskness briskness = new Briskness();
     public int x = 275;
     public int y = 300;
-    public byte speed = 3;
 
     public Image getImage(){
-        ImageIcon image = new ImageIcon("src/MyGame/images/Airplane.png");
+        ImageIcon image = new ImageIcon("MyGame/images/img.png");
         return image.getImage();
     }
 
     @Override
-    public void paint(Graphics g){
-        super.paint(g);
-        Graphics2D g2 = (Graphics2D)g;
-        g2.drawImage(getImage(), getX(), getY(), 95, 95,this);
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(fond.fond(), 0, 0, getWidth(), getWidth(), this);
+        g.drawImage(getImage(), x, y, 90, 150, this);
+        super.repaint();
+        briskness.paint(g);
     }
-
-    @Override
-    public int getX(){return x;}
-
-    @Override
-    public int getY(){return y;}
 
     @Override
     public void keyTyped(KeyEvent e){}
 
     @Override
     public void keyPressed(KeyEvent e){
-        super.repaint();
-
         switch (e.getKeyCode()) {
-            case 37 -> x -= (1*speed);
-            case 38 -> y -= 1;
-            case 39 -> x += 1;
-            case 40 -> y += 1;
+            case 37 -> x -= 20;
+            case 38 -> y -= 20;
+            case 39 -> x += 20;
+            case 40 -> y += 20;
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {}
+
+    @Override
+    public void mouseDragged(MouseEvent e) {}
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        System.out.println("Me mueves");
+        x = (int)e.getPoint().getX();
+        y = (int)e.getPoint().getY();
+        super.repaint();
+    }
 }
